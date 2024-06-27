@@ -1,0 +1,54 @@
+
+
+
+
+#myInput {
+    //background-image: url('../../assets/search.jpeg');
+    //background-position: 10px 10px;
+   // background-repeat: no-repeat;
+    width: 64%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 6px solid #198754;
+    margin-bottom: 0;
+    margin-left: 286px;
+  }
+
+  h3{
+    text-align: center;
+  }
+
+  #searchlogo{
+    size: 10px;
+  }
+
+  
+  
+  table th {
+    text-align: center; 
+ }
+ 
+ .table {
+    margin: auto;
+    width: 50% !important; 
+ }
+
+ .srch{
+  margin: auto;
+  width: 50% !important;
+  margin-top: 16px;
+ }
+
+  .butnsdiv{
+    text-align: center;
+    margin-top: 124px;
+  }
+
+
+
+  @media (max-width: 600px) {
+    div {
+      width: auto;
+      padding: 10px;
+    }
+  }

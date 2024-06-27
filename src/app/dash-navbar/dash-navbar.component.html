@@ -1,0 +1,205 @@
+<header>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-3 col-3">
+        <div class="logo-container">
+          <img src="../../assets/logo1.jpg" alt="" class="logo" (click)="MenuClk('home')">
+
+        </div>
+
+
+      </div>
+      <div class="col-md-9 col-sm-9 col-9 text-center" style="display: flex; flex-direction: row; ">
+        <div style="display: flex;flex-wrap: wrap;gap: 15rem; margin-top: 35px;">
+          <h3>Nextium Fundraiser </h3>
+        </div>
+        <div class="desktop-menu" style="display: flex;flex-wrap: wrap; gap:10rem;margin-top: 50px;">
+          <div>
+            <ul>
+              <li (click)="MenuClk('home')"><a id="homeid" class="{{homeactive}}">Home</a></li>
+              <li (click)="MenuClk('about')"><a class="{{aboutactive}}">About Us</a></li>
+              <li (click)="MenuClk('cause')"><a class="{{causeactive}}">Cause</a></li>
+              <li (click)="MenuClk('donatenow')"><a class="{{donateactive}}">Donate Now</a></li>
+              <li (click)="MenuClk('Recievedonation')"><a class="{{recieveactive}}">Recieve Donations</a></li>
+
+              <div class="dropdown1 d-none">
+                <button class="dropdown-toggle menu" data-toggle="dropdown">Menu
+                  <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a>Page 1-1</a></li>
+                  <li><a>Page 1-2</a></li>
+                  <li><a>Page 1-3</a></li>
+                </ul>
+              </div>
+            </ul>
+          </div>
+          <div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btnsshow" data-bs-toggle="modal" data-bs-target="#signinmodal"
+              (click)="signinnavclk()">
+              Sign In
+            </button>
+            <button type="button" class="btn btn-primary btnsshow" data-bs-toggle="modal" data-bs-target="#signupmodal"
+              (click)="signupnavclk()">
+              Sign Up
+            </button>
+          </div>
+
+
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</header>
+
+
+<!-- Sign in  Modal -->
+<div class="modal fade" id="signinmodal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1">Sign In</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="MenuClk('home')"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="loginForm">
+          <!-- Email input -->
+          <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="form2Example1"> User Name or Email</label>
+            <input type="email" id="form2Example1" style="border-color: black;" placeholder="Enter email"
+              class="form-control" formControlName="loginemail" />
+            <div class="text-danger" *ngIf="loginmailerr">Email Address required!</div>
+          </div>
+
+          <!-- Password input -->
+          <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="form2Example2">Password</label>
+            <input type="password" id="form2Example2" style="border-color: black;" placeholder="Enter password"
+              class="form-control" formControlName="loginpassword" />
+            <div *ngIf="loginpswrderr" class="text-danger">Password is required!</div>
+          </div>
+
+          <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Checkbox -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="form2Example31" />
+                <label class="form-check-label" for="form2Example31"> Remember me </label>
+              </div>
+            </div>
+
+            <div class="col">
+              <!-- Simple link -->
+              <a href="">Forgot password?</a>
+            </div>
+          </div>
+
+          <!-- Submit button -->
+          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4 signin"
+            (click)="signinclk()">Sign in</button>
+
+          <!-- Register buttons -->
+          <!-- <div class="text-center">
+            <p>Not a member? <a href="" data-bs-toggle="modal" data-bs-target="#signupmodal">Register</a></p>
+
+          </div> -->
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sign up  Modal -->
+<div class="modal fade" id="signupmodal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">Sign up</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="MenuClk('home')"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form class="mx-1 mx-md-4" [formGroup]="regForm">
+          <div class="d-flex flex-row align-items-center mb-4" style="margin-top: -18px;">
+            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+              <label class="form-label" for="formfirstname">First Name</label>
+              <input type="text" id="formfirstname" style="border-color: black;" placeholder="Enter First Name"
+                class="form-control" formControlName="firstName" />
+              <div class="text-danger" *ngIf="firstnameerror">First name is required!</div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row align-items-center mb-4" style="margin-top: -14px;">
+            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+              <label class="form-label" for="formlastname">Last Name</label>
+              <input type="text" id="formlastname" style="border-color: black;" placeholder="Enter Last Name"
+                class="form-control" formControlName="lastName" />
+              <div class="text-danger" *ngIf="lastnameerror">Last name is required!</div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row align-items-center mb-4" style="margin-top: -14px;">
+            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+              <label class="form-label" for="formusername">User Name</label>
+              <input type="text" id="formusername" style="border-color: black;" placeholder="Enter User Name"
+                class="form-control" formControlName="UserName" />
+              <div class="text-danger" *ngIf="usernameerror">User name is required!</div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row align-items-center mb-4" style="margin-top: -14px;">
+            <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+              <label class="form-label" for="form3Example3c">User Email</label>
+              <input type="email" id="form3Example3c" style="border-color: black;" placeholder="Enter User Email"
+                class="form-control" formControlName="Useremail" />
+              <div class="text-danger" *ngIf="emailerror">User Email is required!</div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row align-items-center mb-4" style="margin-top: -14px;">
+            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+              <label class="form-label" for="form3Example4c">Password</label>
+              <input type="password" id="form3Example4c" style="border-color: black;" placeholder="Enter Password"
+                class="form-control" formControlName="Userpassword" />
+              <div class="text-danger" *ngIf="passworderror"> password is required!</div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row align-items-center mb-4" style="margin-top: -14px;">
+            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+              <label class="form-label" for="form3Example4cd">Repeat your password</label>
+              <input type="password" id="form3Example4cd" style="border-color: black;"
+                placeholder="Repeat Your Password" class="form-control" formControlName="Repeatpassword" />
+              <div class="text-danger" *ngIf="reppaswrderror">Repeat password is required!</div>
+            </div>
+          </div>
+
+          <div class="form-check d-flex justify-content-center mb-5">
+            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+            <label class="form-check-label" for="form2Example3">
+              I agree all statements in <a href="#!">Terms of service</a>
+            </label>
+          </div>
+
+          <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4" style=" margin-top: -36px;">
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
+              (click)="signupclk()">Sign Up</button>
+          </div>
+
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>

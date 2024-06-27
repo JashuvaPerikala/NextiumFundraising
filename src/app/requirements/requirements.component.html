@@ -1,0 +1,181 @@
+<!-- <app-dash-navbar></app-dash-navbar> -->
+
+<h3 *ngIf="reqq" style="text-align: center;margin-top: 2rem;color: darkblue;">Recieving Donations for<br>
+  <span style="color: blueviolet;">{{orgnamedisplay}}</span>
+</h3>
+
+<p *ngIf="reqq" style="margin-top: 0rem;">
+  <a class="link-opacity-100" style="text-decoration: none;margin-left: 33px;cursor: pointer;" (click)="backtoreq()">
+    <- go to previous page</a>
+</p>
+
+<div *ngIf="reqq">
+  <div style="margin-left: 36%;width: 62%;" *ngIf="firstitt">
+    <div class="row">
+      <div class="col">
+        <label>*Requirement 1</label>
+        <input type="text" class="reqinp" [formControl]="reqonecntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" style="margin-left: 78px;width: 16%;border-color: black;margin-top: 10px;"
+          placeholder="Units needed" [formControl]="unitonecntrl">
+      </div><br>
+    </div>
+    <!-- Button trigger modal -->
+    <button *ngIf="reqq" type="button" (click)="Recieveclk()" class="btn btn-primary"
+      style="margin-left: 9%;width: 18%;margin-top: 65px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Receive
+    </button>
+  </div>
+  <div style="text-align: revert; width: 22%;margin-left: 38%;margin-top: 24px;" *ngIf="secitt">
+    <div class="row">
+      <div class="col">
+        <label>*Requirement 1</label>
+        <input type="text" class="reqinp" [formControl]="reqonecntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" style="width: 40%;border-color: black;margin-top: 10px;margin-left: 72px;"
+          placeholder="Units needed" [formControl]="unitonecntrl">
+      </div><br><br>
+      <div class="col" style="margin-top: 20px;">
+        <label>*Requirement 2</label>
+        <input type="text" class="reqinp" [formControl]="reqtwocntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" style="width: 40%;border-color: black;margin-top: 10px;margin-left: 72px;"
+          placeholder="Units needed" [formControl]="unittwocntrl">
+      </div>
+    </div>
+
+
+    <!-- Button trigger modal -->
+    <button *ngIf="reqq" type="button" (click)="Recieveclk()" class="btn btn-primary"
+      style="margin-left: 20%;width: 60%;margin-top: 49px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Receive
+    </button>
+  </div>
+
+  <div style="text-align: revert; width: 22%;margin-left: 35%;margin-top: 34px;" *ngIf="thrditt">
+    <div class="row">
+      <div class="col">
+        <label>*Requirement 1</label>
+        <input type="text" class="reqinp" [formControl]="reqonecntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" style=" width: 40%;border-color: black;margin-top: 10px; margin-left: 27%;"
+          placeholder="Units needed" [formControl]="unitonecntrl">
+      </div><br>
+      <div class="col" style="margin-top: 18px;">
+        <label>*Requirement 2</label>
+        <input type="text" class="reqinp" [formControl]="reqtwocntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" style="width: 40%;border-color: black;margin-top: 10px;margin-left: 27%;"
+          placeholder="Units needed" [formControl]="unittwocntrl">
+      </div>
+    </div><br>
+
+    <div class="row">
+      <div class="col">
+        <label>*Requirement 3</label>
+        <input type="text" class="reqinp" [formControl]="reqthreecntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" style="width: 40%;border-color: black; margin-top: 10px;margin-left: 27%;"
+          placeholder="Units needed" [formControl]="unitthreecntrl">
+      </div><br>
+    </div>
+
+    <!-- Button trigger modal -->
+    <button *ngIf="reqq" type="button" (click)="Recieveclk()" class="btn btn-primary"
+      style="margin-top: 10px;width: 95%;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Receive
+    </button>
+  </div>
+
+  <div *ngIf="forthitt" style="text-align: -webkit-center;margin-top: 36px;">
+    <div class="row" style="--bs-gutter-x: 0rem;">
+      <div class="col">
+        <label>*Requirement 1</label>
+        <input type="text" class="reqinp" [formControl]="reqonecntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" class="form-control" placeholder="Units needed" [formControl]="unitonecntrl">
+      </div><br>
+      <div class="col">
+        <label>*Requirement 2</label>
+        <input type="text" class="reqinp" [formControl]="reqtwocntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" class="form-control" placeholder="Units needed" [formControl]="unittwocntrl">
+      </div>
+    </div><br>
+
+    <div class="row"style="--bs-gutter-x: 0rem;">
+      <div class="col">
+        <label>*Requirement 3</label>
+        <input type="text" class="reqinp" [formControl]="reqthreecntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" class="form-control" placeholder="Units needed" [formControl]="unitthreecntrl">
+      </div><br>
+      <div class="col">
+        <label>*Requirement 4</label>
+        <input type="text" class="reqinp" [formControl]="reqfourcntrl"><br>
+        <!-- <label>Units needed</label> -->
+        <input type="number" class="form-control" placeholder="Units needed" [formControl]="unitfourcntrl">
+      </div>
+    </div>
+
+    <!-- Button trigger modal -->
+    <button *ngIf="reqq" type="button" (click)="Recieveclk()" style="  width: 151px;" class="btn btn-primary" data-bs-toggle="modal"
+      data-bs-target="#exampleModal">
+      Receive
+    </button>
+
+  </div>
+
+</div>
+
+
+
+<form class="form1" [formGroup]="orgform" *ngIf="reqq == false">
+  <label>Type of organization:</label>
+  <input type="text" class="form-control" formControlName="typeorg">
+  <div *ngIf="typeerror" class="text-danger">organization type required!</div>
+  <label>Name of organization:</label>
+  <input type="text" class="form-control" formControlName="nameorg">
+  <div *ngIf="nameerror" class="text-danger">organization name required!</div>
+  <label>Address:</label>
+  <input type="text" class="form-control" formControlName="addresscntrl">
+  <div *ngIf="addresserror" class="text-danger">address required!</div>
+  <label>Phone number :</label>
+  <input type="text" class="form-control" maxlength="10" (keypress)="numberOnly($event)"
+    formControlName="phnumbercntrl">
+  <div *ngIf="phnerror" class="text-danger">phone number required!</div>
+  <label>No.of requirements:</label>
+  <input type="number" class="form-control" formControlName="reqcntrl">
+  <div *ngIf="reqerror" class="text-danger">no:of requirements required!</div>
+  <div *ngIf="reqcounterror" class="text-danger">requirements should not more than 4!</div>
+  <button type="button" class="btn btn-info" id="reqbtn" (click)="reqclk()">Go to requirements section</button>
+</form>
+
+<!-- <button type="button" *ngIf="reqq" style="color: white;background-color: blueviolet;width: 95px;margin-left: 65px;"
+  (click)="backtoreq()">Back</button> -->
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Donation Request received successfully.
+        </h5>
+        <button type="button" (click)="gotohome()" style="margin-left: 215px;" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- <div class="modal-body">
+          Completed
+        </div> -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="gotohome()" data-bs-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
