@@ -1,0 +1,56 @@
+.form1 {
+  
+    margin-top: 1%;
+    margin-left: 8%;
+    label{
+        font-family: bold;
+        font-size: 20px;
+        margin-top: 10px;
+    }
+    input{
+        width: 23%;
+        border-color: black;
+    
+    }
+}
+
+.req{
+    text-align: revert;
+    width: 22%;
+    margin-left: 21%;
+    margin-top: 34px;
+    display: inline-grid;
+}
+
+#reqbtn{
+    margin-left: 42%;
+    margin-top: -30%;
+}
+
+// #recbtn{
+//     margin-left: 61%;
+//     width: 12%;
+//     margin-top: 142px;
+// }
+
+#orgid{
+    width: fit-content;
+    text-align: center;
+    margin-left: 37%;
+    margin-top: 19px;
+}
+
+.form-control{
+    width: 40%;
+    border-color: black;
+    margin-top: 10px;
+
+}
+
+.reqinp{
+    margin-left: 16px;  
+}
+
+
+
+

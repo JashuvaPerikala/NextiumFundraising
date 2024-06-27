@@ -1,0 +1,173 @@
+<!-- <app-dash-navbar></app-dash-navbar> -->
+
+<div style="margin-top: 2rem;" *ngIf="donform">
+  <h3 style="text-align: center;color:blueviolet;">Donor Details</h3>
+  <a class="link-opacity-100" style="text-decoration: none;margin-left: 33px;cursor: pointer;" [routerLink]="['overview/need']"
+    target="_blank">
+    <- go to previous page</a>
+
+</div>
+
+<form *ngIf="donform" [formGroup]="deliver">
+  <div class="row">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Enter First Name" name="" formControlName="ufirstName">
+      <div class="text-danger" *ngIf="fnameerror">first name required!</div>
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Enter Last Name" name="" formControlName="ulastName">
+      <div class="text-danger" *ngIf="lnameerror">last name required!</div>
+    </div>
+  </div><br>
+  <div class="row">
+    <div class="col">
+      <input type="email" class="form-control" placeholder="Enter email" name="email" formControlName="uemail">
+      <div class="text-danger" *ngIf="emailerro">Email required!</div>
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Enter phone number" (keypress)="numberOnly($event)" name=""
+        formControlName="uNumber" maxlength="10">
+      <div class="text-danger" *ngIf="phnnumberr">phone number required!</div>
+    </div>
+  </div><br>
+  <div class="row">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Enter Address" name="" formControlName="uaddress">
+      <div class="text-danger" *ngIf="adderror">Address required!</div>
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Enter City" name="" formControlName="ucity">
+      <div class="text-danger" *ngIf="cityerror">City required!</div>
+    </div>
+  </div><br>
+  <div class="row">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Enter State" name="" formControlName="ustate">
+      <div class="text-danger" *ngIf="stateerror">State required!</div>
+    </div>
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Enter Zip Code" name="" formControlName="uzipcode">
+      <div class="text-danger" *ngIf="ziperror">Zipcode required!</div>
+    </div>
+  </div><br>
+  <div class="row">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Enter Country" name="" formControlName="ucountryname">
+      <div class="text-danger" *ngIf="cntryerror">country name required!</div>
+    </div>
+    <div class="col">
+      <select class="form-select" style="width: 54%;border-color: #0a58ca;" aria-label="Default select example">
+        <option selected>Goods</option>
+        <option>Monetary</option>
+      </select>
+    </div>
+  </div>
+  <button type="button" class="btn btn-info" style="margin-top: 26px;width: 27%;margin-left: 188px;"
+    (click)="nextclk()">Next</button>
+</form>
+
+<!-- <img *ngIf="donform == false" src="../../assets/img-2.jpg" class="rcorners2"> -->
+
+
+
+
+<!-- <label style="height: 100px;width: 150px;border-radius: 6px;border: 1px solid black;" >Upload Image</label> -->
+
+<div *ngIf="donform == false">
+  <h3 style="text-align: center;color: darkblue">Donating for <span style="color:blueviolet ;">{{orgname}}</span> </h3>
+  <div>
+    <ul style="display: ruby;list-style-type: none;">
+      <li>
+        <img [src]="imageUrl1"
+        style="height: 150px;width: 150px;border-radius: 6px;margin-top: 14px;border: 1px solid black;margin-left: 130px;">
+      </li>
+      <li>
+        <img [src]="imageUrl2"
+      style="height: 150px;width: 150px;border-radius: 6px;margin-top: 14px;border: 1px solid black;margin-left: 130px;">
+      </li>
+      <li>
+        <img [src]="imageUrl3"
+      style="height: 150px;width: 150px;border-radius: 6px;margin-top: 14px;border: 1px solid black;margin-left: 130px;">
+      </li>
+      <li>
+        <img [src]="imageUrl4"
+      style="height: 150px;width: 150px;border-radius: 6px;margin-top: 14px;border: 1px solid black;margin-left: 130px;">
+      </li>
+    </ul>
+  </div>
+  <div>
+    <ul style="display: ruby;list-style-type: none;">
+      <li>
+        <input type="file" #image accept="image/*" style="margin-left: 130px;margin-top: 14px;width: 157px;"
+        (change)="handleFileInput1($event)">
+      </li>
+      <li>
+        <input type="file" #image accept="image/*" style="margin-left: 130px;margin-top: 14px;width: 157px;"
+        (change)="handleFileInput2($event)">
+      </li>
+      <li>
+        <input type="file" #image accept="image/*" style="margin-left: 130px;margin-top: 14px;width: 157px;"
+        (change)="handleFileInput3($event)">
+      </li>
+      <li>
+        <input type="file" #image accept="image/*" style="margin-left: 130px;margin-top: 14px;width: 157px;"
+        (change)="handleFileInput4($event)">
+      </li>
+    </ul>
+  </div>
+
+  <form style="width: 100% !important;margin-top: 47px;">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <!-- <th></th> -->
+          <th>Requirements</th>
+          <th>Units Required</th>
+          <th>Units want to Donate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let data of chkdreq ;let i = index">
+          <td>{{data?.requirement}}</td>
+          <td>{{data?.units_needed}}</td>
+          <td>
+            <input type="number" #chkdata [formControl]="data?.unitsdonatecntrl" id="unitsdonatecntrl">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+
+  
+
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" *ngIf="donform == false" class="btn btn-primary" (click)="donorsubmit()">
+  Submit
+</button>
+
+<!-- Modal -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" style="position: absolute;">
+          Submitted Successfully
+        </h5>
+        <button type="button" class="close" style="width: unset;margin-left: auto;margin-top: unset;"
+          data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Thank You
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div> -->
