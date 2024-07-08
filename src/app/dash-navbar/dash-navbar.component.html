@@ -1,3 +1,5 @@
+<app-nextmspinner *ngIf="spinner"  [spinnerTime]="spinnerTime" (spinnerEvent)="spinner = false"></app-nextmspinner>
+
 <header>
   <div class="container">
     <div class="row">
@@ -33,17 +35,8 @@
               </div>
             </ul>
           </div>
-          <div>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btnsshow" data-bs-toggle="modal" data-bs-target="#signinmodal"
-              (click)="signinnavclk()">
-              Sign In
-            </button>
-            <button type="button" class="btn btn-primary btnsshow" data-bs-toggle="modal" data-bs-target="#signupmodal"
-              (click)="signupnavclk()">
-              Sign Up
-            </button>
-          </div>
+
+
 
 
 
@@ -52,17 +45,41 @@
 
     </div>
 
+    <div *ngIf="usernametrue" style="margin-left: 74%;margin-top: -59px;">
+      <span class="dot"></span>
+      <h4 style="color: aliceblue;margin-top: -33px;margin-left: 102px;  font-family: Kalam, cursive;">{{loginuserName}}
+      </h4>
+      <button type="button" style="margin-left: 76px;" data-mdb-button-init data-mdb-ripple-init
+        class="btn btn-info btn-rounded" id="logoutid" (click)="logotclk()">Log Out</button>
+    </div>
+
   </div>
+
+
+
+
+  <div *ngIf="usernametrue == false" style="  margin-left: 80%;margin-top: -42px;">
+    <!-- Button trigger modal -->
+    <button id="signinid" type="button" class="btn btn-primary btnsshow" (click)="signinnavclk()">
+      Sign In
+    </button>
+    <button id="signupid" type="button" class="btn btn-primary btnsshow" (click)="signupnavclk()">
+      Sign Up
+    </button>
+  </div>
+
 </header>
 
 
 <!-- Sign in  Modal -->
-<div class="modal fade" id="signinmodal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+<div class="modal fade" id="signinmodal" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel1">Sign In</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="MenuClk('home')"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="MenuClk('home')"></button>
       </div>
       <div class="modal-body p-4">
         <form [formGroup]="loginForm">
@@ -77,8 +94,12 @@
           <!-- Password input -->
           <div data-mdb-input-init class="form-outline mb-4">
             <label class="form-label" for="form2Example2">Password</label>
-            <input type="password" id="form2Example2" style="border-color: black;" placeholder="Enter password"
-              class="form-control" formControlName="loginpassword" />
+            <input [type]="changetype?'password':'text'" id="form2Example2" style="border-color: black;"
+              placeholder="Enter password" class="form-control" formControlName="loginpassword" />
+            <span *ngIf="loginpswrderr == false" style="position: absolute; right: 38px;top: 156px; cursor: pointer;"
+              (click)="viewpswrd()"><i [ngClass]="visible?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
+            <span *ngIf="loginpswrderr == true" style="position: absolute; right: 38px;top: 179px; cursor: pointer;"
+              (click)="viewpswrd()"><i [ngClass]="visible?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
             <div *ngIf="loginpswrderr" class="text-danger">Password is required!</div>
           </div>
 
@@ -87,26 +108,26 @@
             <div class="col d-flex justify-content-center">
               <!-- Checkbox -->
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="form2Example31" />
+                <input class="form-check-input" style="border-color: aqua;" type="checkbox" value=""
+                  id="form2Example31" />
                 <label class="form-check-label" for="form2Example31"> Remember me </label>
               </div>
             </div>
 
             <div class="col">
               <!-- Simple link -->
-              <a href="">Forgot password?</a>
+              <a class="frgt" (click)="forgotclk()">Forgot password?</a>
             </div>
           </div>
-
-          <!-- Submit button -->
           <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4 signin"
             (click)="signinclk()">Sign in</button>
+          <div style="margin-left: 86px;margin-top: -30px;">
+            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account?
+              <a class="registr" (click)="registerclk()">Register</a>
+            </p>
+          </div>
 
-          <!-- Register buttons -->
-          <!-- <div class="text-center">
-            <p>Not a member? <a href="" data-bs-toggle="modal" data-bs-target="#signupmodal">Register</a></p>
 
-          </div> -->
         </form>
 
       </div>
@@ -115,12 +136,14 @@
 </div>
 
 <!-- Sign up  Modal -->
-<div class="modal fade" id="signupmodal" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+<div class="modal fade" id="signupmodal" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel2" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel2">Sign up</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="MenuClk('home')"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="MenuClk('home')"></button>
       </div>
       <div class="modal-body p-4">
         <form class="mx-1 mx-md-4" [formGroup]="regForm">
@@ -161,6 +184,7 @@
               <input type="email" id="form3Example3c" style="border-color: black;" placeholder="Enter User Email"
                 class="form-control" formControlName="Useremail" />
               <div class="text-danger" *ngIf="emailerror">User Email is required!</div>
+              <div class="text-danger" *ngIf="emailerror==false && invalidmailerror">Enter Valid Email</div>
             </div>
           </div>
 
@@ -168,8 +192,10 @@
             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
             <div data-mdb-input-init class="form-outline flex-fill mb-0">
               <label class="form-label" for="form3Example4c">Password</label>
-              <input type="password" id="form3Example4c" style="border-color: black;" placeholder="Enter Password"
-                class="form-control" formControlName="Userpassword" />
+              <input [type]="changetype1?'password':'text'" id="form3Example4c" style="border-color: black;"
+                placeholder="Enter Password" class="form-control" formControlName="Userpassword" />
+              <span class="" style="position: absolute; right: 71px; top: 365px; cursor: pointer;"
+                (click)="viewpswrd1()"><i [ngClass]="visible1?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
               <div class="text-danger" *ngIf="passworderror"> password is required!</div>
             </div>
           </div>
@@ -178,16 +204,20 @@
             <i class="fas fa-key fa-lg me-3 fa-fw"></i>
             <div data-mdb-input-init class="form-outline flex-fill mb-0">
               <label class="form-label" for="form3Example4cd">Repeat your password</label>
-              <input type="password" id="form3Example4cd" style="border-color: black;"
+              <input [type]="changetype2?'password':'text'" id="form3Example4cd" style="border-color: black;"
                 placeholder="Repeat Your Password" class="form-control" formControlName="Repeatpassword" />
+              <span class="" style="position: absolute;right: 68px;top: 70%;cursor: pointer;" (click)="viewpswrd2()"><i
+                  [ngClass]="visible2?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
               <div class="text-danger" *ngIf="reppaswrderror">Repeat password is required!</div>
+              <div class="text-danger" *ngIf="samepasserror">Password should be same</div>
             </div>
           </div>
 
           <div class="form-check d-flex justify-content-center mb-5">
-            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+            <input class="form-check-input me-2" type="checkbox" style="border-color: aqua;" value=""
+              id="form2Example3" />
             <label class="form-check-label" for="form2Example3">
-              I agree all statements in <a href="#!">Terms of service</a>
+              I agree all statements in <a class="terms">Terms of service</a>
             </label>
           </div>
 
@@ -200,6 +230,72 @@
 
 
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Forgot password Modal -->
+<div class="modal fade" id="forgotmodal" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel3" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel3">Find Your Account</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="MenuClk('home')"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form>
+          <!-- Email input -->
+          <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="forgtinp"> Enter your user name or email address</label>
+            <input type="email" id="forgtinp" style="border-color: black;" placeholder="Enter email or username"
+              class="form-control" [formControl]="forgtinputcntrl" />
+            <div class="text-danger" *ngIf="frgteror">Please fill the input field</div>
+            <p></p>
+          </div>
+
+          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4 signin"
+            (click)="continueclk()">Continue</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reset password modal -->
+<div class="modal fade" id="paswrdResetmodal" tabindex="-1" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel3" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel3">Password Reset For</h4><br>
+        <div>
+          <p style="margin-left: 12px;margin-bottom: 0rem;">{{usermail}}</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="MenuClk('home')"></button>
+      </div>
+      <div class="card-body px-5" style="margin-bottom:30px ;">
+        <div data-mdb-input-init class="form-outline">
+          <label class="form-label" style="margin-bottom: 0rem;" for="pasww">Enter new password</label>
+          <input [type]="changetype3?'password':'text'" id="pasww" class="form-control my-3"
+            [formControl]="newpswdCntrl" />
+          <span class="" style="position: absolute; right: 71px; top: 115px; cursor: pointer;" (click)="viewpswrd3()"><i
+              [ngClass]="visible3?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
+        </div>
+        <div data-mdb-input-init class="form-outline">
+          <label class="form-label" style="margin-bottom: 0rem;" for="newpasww">Repeat new password</label>
+          <input [type]="changetype4?'password':'text'" id="newpasww" class="form-control my-3"
+            [formControl]="repeatpaswrdCntrl" />
+          <span class="" style="position: absolute; right: 71px; top: 207px; cursor: pointer;" (click)="viewpswrd4()"><i
+              [ngClass]="visible4?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
+        </div>
+        <button data-mdb-ripple-init class="btn btn-primary w-100" (click)="resetpaswrd()">Reset password</button>
+
+      </div>
+
     </div>
   </div>
 </div>

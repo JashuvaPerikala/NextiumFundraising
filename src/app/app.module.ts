@@ -24,6 +24,9 @@ import { OverviewComponent } from './overview/overview.component';
 import { MatTableModule } from '@angular/material/table'; 
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { PaymentComponent } from './payment/payment.component';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { NextmspinnerComponent } from './nextmspinner/nextmspinner.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +40,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     CauseComponent,
     FooterComponent,
     DashcenterComponent,
-    OverviewComponent
+    OverviewComponent,
+    PaymentComponent,
+    NextmspinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +59,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     RouterOutlet,
     CarouselModule,
     NgxPaginationModule,
+    NgxPayPalModule,
     ToastrModule.forRoot()
   ],
   providers: [],

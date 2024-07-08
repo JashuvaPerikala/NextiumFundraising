@@ -8,11 +8,19 @@ import { Router } from '@angular/router';
 })
 export class OverviewComponent {
   router = inject(Router)
-  showfooter(){
 
-    if(this.router.url.includes('overview/need') || this.router.url.includes('overview/uploadimg')){
+  showfooter() {
+    if (this.router.url.includes('overview/need') || this.router.url.includes('overview/uploadimg') ||
+      this.router.url.includes('overview/payment')) {
       return false
     }
     return true
+  }
+
+  showheader() {
+    if(this.router.url.includes('overview/payment')){
+      return false
+    }
+    return true;
   }
 }

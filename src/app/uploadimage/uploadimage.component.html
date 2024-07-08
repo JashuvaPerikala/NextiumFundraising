@@ -2,7 +2,8 @@
 
 <div style="margin-top: 2rem;" *ngIf="donform">
   <h3 style="text-align: center;color:blueviolet;">Donor Details</h3>
-  <a class="link-opacity-100" style="text-decoration: none;margin-left: 33px;cursor: pointer;" [routerLink]="['overview/need']"
+
+  <a class="link-opacity-100" style="text-decoration: none;margin-left: 33px;cursor: pointer;" (click)="gotoneeds()"
     target="_blank">
     <- go to previous page</a>
 
@@ -11,25 +12,33 @@
 <form *ngIf="donform" [formGroup]="deliver">
   <div class="row">
     <div class="col">
-      <input type="text" class="form-control" placeholder="Enter First Name" name="" formControlName="ufirstName">
-      <div class="text-danger" *ngIf="fnameerror">first name required!</div>
+      <input type="text" class="form-control" placeholder="Enter phone number" (keypress)="numberOnly($event)" name=""
+        formControlName="uNumber" (input)="getcontdetails()" maxlength="10">
+      <div class="text-danger" *ngIf="phnnumberr">Valid phone number required!</div>
     </div>
+    
     <div class="col">
       <input type="text" class="form-control" placeholder="Enter Last Name" name="" formControlName="ulastName">
       <div class="text-danger" *ngIf="lnameerror">last name required!</div>
     </div>
   </div><br>
+
   <div class="row">
     <div class="col">
-      <input type="email" class="form-control" placeholder="Enter email" name="email" formControlName="uemail">
+
+      <input type="email" class="form-control" placeholder="Enter email" id="email" name="email" formControlName="uemail">
       <div class="text-danger" *ngIf="emailerro">Email required!</div>
+      <div class="text-danger" *ngIf="emailerro == false && invalidmailerror">Enter Valid Email</div>
+
     </div>
+
     <div class="col">
-      <input type="text" class="form-control" placeholder="Enter phone number" (keypress)="numberOnly($event)" name=""
-        formControlName="uNumber" maxlength="10">
-      <div class="text-danger" *ngIf="phnnumberr">phone number required!</div>
+      <input type="text" class="form-control" placeholder="Enter First Name" name="" formControlName="ufirstName">
+      <div class="text-danger" *ngIf="fnameerror">first name required!</div>
     </div>
+    
   </div><br>
+
   <div class="row">
     <div class="col">
       <input type="text" class="form-control" placeholder="Enter Address" name="" formControlName="uaddress">
@@ -75,7 +84,8 @@
 
 <div *ngIf="donform == false">
   <h3 style="text-align: center;color: darkblue">Donating for <span style="color:blueviolet ;">{{orgname}}</span> </h3>
-  <div>
+
+  <!-- <div>
     <ul style="display: ruby;list-style-type: none;">
       <li>
         <img [src]="imageUrl1"
@@ -114,9 +124,13 @@
         (change)="handleFileInput4($event)">
       </li>
     </ul>
-  </div>
+  </div> -->
 
   <form style="width: 100% !important;margin-top: 47px;">
+    <a class="link-opacity-100" style="text-decoration: none;margin-left: 33px;cursor: pointer;" (click)="gotouserdetails()"
+    target="_blank">
+    <- go to previous page</a>
+
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -132,7 +146,7 @@
           <td>{{data?.requirement}}</td>
           <td>{{data?.units_needed}}</td>
           <td>
-            <input type="number" #chkdata [formControl]="data?.unitsdonatecntrl" id="unitsdonatecntrl">
+            <input type="text" (keypress)="numberOnly($event)" #chkdata [formControl]="data?.unitsdonatecntrl" id="unitsdonatecntrl">
           </td>
         </tr>
       </tbody>

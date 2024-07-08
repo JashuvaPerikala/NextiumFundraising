@@ -1,21 +1,22 @@
 <!-- <app-dash-navbar></app-dash-navbar> -->
 
 
-  <div class="srch" data-mdb-input-init>
-    <h3 style="text-align: center;color: dodgerblue;;">Organizations Requirements</h3>
-    <input id="search-input" type="search" id="form1" class="form-control" placeholder="Search here" />
-  </div>
+<div class="srch" data-mdb-input-init>
+  <h3 style="text-align: center;color: dodgerblue;;">Organizations Requirements</h3>
+  <input id="search-input" type="search" id="form1" [formControl]="searchcntrl"
+    class="form-control" placeholder="Search here min 3 letters" (input)="searchinput()" />
+</div>
 
 
-<div>
+<div *ngIf="orgdata?.length > 0">
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th >Select</th>
-        <th >Organization</th>
-        <th >Address</th>
-        <th >Contact</th>
-        <th >Requirements</th>
+        <th>Select</th>
+        <th>Organization</th>
+        <th>Address</th>
+        <th>Contact</th>
+        <th>Requirements</th>
       </tr>
     </thead>
     <tbody>
@@ -31,24 +32,25 @@
             <tr *ngFor="let reqdata of data?.requirements?.$values;let ind = index">
               <td>
                 <input type="checkbox" [checked]="reqdata?.checked" (change)="reqchkchange($event,ind,reqdata)">
-                <label >{{reqdata?.requirement}}  {{reqdata?.units_needed}}</label>
+                <label>{{reqdata?.requirement}} {{reqdata?.units_needed}}</label>
               </td>
-            
+
             </tr>
           </table>
         </td>
       </tr>
     </tbody>
-    
-  </table>
 
-  <button type="button" class="btn btn-success" style="width: 142px;margin-left: 45%;" (click)="Proceedclk()">Proceed</button>
-  
+  </table>
+  <button type="button" class="btn btn-success" style="width: 142px;margin-left: 45%;"
+    (click)="Proceedclk()">Proceed</button>
+
   <div class="mt-8 flex justify-center items-center" style="margin-left: 64%;">
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
   </div>
- 
+
 </div>
 
-
-  
+<div *ngIf="orgdata?.length == 0;" style="text-align: center;">
+  <h5 style="color: red;margin-top: 40px;"> No Data Found </h5>
+</div>
