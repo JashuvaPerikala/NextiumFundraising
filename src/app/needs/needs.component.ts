@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FundraiserService } from '../fundraiser.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
+
+import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,16 +14,26 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class NeedsComponent implements OnInit {
   orgdata: any;
-  p:number = 1;
-  itemsPerPage:number = 5;
-  totalProduct:any
-  
+  p: number = 1;
+  itemsPerPage: number = 5;
+  totalProduct: any
+  searchcntrl = new FormControl();
+  private subscription: Subscription = new Subscription();
+
   constructor(private router: Router, private service: FundraiserService, private toast: ToastrService) {
 
   }
   ngOnInit(): void {
+    this.subscription.add(this.service.GetdonData$.subscribe(x=>{
+      if(x == null || x == undefined){
+        this.router.navigate(['overview/home']);
+        this.toast.warning('Please Use menu bar links');
+      }
+      
+    }))
+
     this.GetOrgdetails();
-    
+
   }
 
   GetOrgdetails() {
@@ -87,5 +97,22 @@ export class NeedsComponent implements OnInit {
     }
 
   }
+
+  searchinput() {
+    this.orgdata = [];
+    if (this.searchcntrl.value?.length >= 3) {
+      this.service.SearchGet(this.searchcntrl.value).subscribe(x => {
+        if (x) {
+          this.orgdata = x.$values;
+        }
+
+      })
+    }else{
+      this.GetOrgdetails();
+    }
+
+  }
+
+  
 
 }

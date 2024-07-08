@@ -16,7 +16,7 @@
         <label>*Requirement 1</label>
         <input type="text" class="reqinp" [formControl]="reqonecntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" style="margin-left: 78px;width: 16%;border-color: black;margin-top: 10px;"
+        <input type="text" (keypress)="numberOnly($event)" style="margin-left: 78px;width: 16%;border-color: black;margin-top: 10px;"
           placeholder="Units needed" [formControl]="unitonecntrl">
       </div><br>
     </div>
@@ -32,14 +32,14 @@
         <label>*Requirement 1</label>
         <input type="text" class="reqinp" [formControl]="reqonecntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" style="width: 40%;border-color: black;margin-top: 10px;margin-left: 72px;"
+        <input type="text" (keypress)="numberOnly($event)" style="width: 40%;border-color: black;margin-top: 10px;margin-left: 72px;"
           placeholder="Units needed" [formControl]="unitonecntrl">
       </div><br><br>
       <div class="col" style="margin-top: 20px;">
         <label>*Requirement 2</label>
         <input type="text" class="reqinp" [formControl]="reqtwocntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" style="width: 40%;border-color: black;margin-top: 10px;margin-left: 72px;"
+        <input type="text" (keypress)="numberOnly($event)" style="width: 40%;border-color: black;margin-top: 10px;margin-left: 72px;"
           placeholder="Units needed" [formControl]="unittwocntrl">
       </div>
     </div>
@@ -58,14 +58,14 @@
         <label>*Requirement 1</label>
         <input type="text" class="reqinp" [formControl]="reqonecntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" style=" width: 40%;border-color: black;margin-top: 10px; margin-left: 27%;"
+        <input type="text" (keypress)="numberOnly($event)" style=" width: 40%;border-color: black;margin-top: 10px; margin-left: 27%;"
           placeholder="Units needed" [formControl]="unitonecntrl">
       </div><br>
       <div class="col" style="margin-top: 18px;">
         <label>*Requirement 2</label>
         <input type="text" class="reqinp" [formControl]="reqtwocntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" style="width: 40%;border-color: black;margin-top: 10px;margin-left: 27%;"
+        <input type="text" (keypress)="numberOnly($event)" style="width: 40%;border-color: black;margin-top: 10px;margin-left: 27%;"
           placeholder="Units needed" [formControl]="unittwocntrl">
       </div>
     </div><br>
@@ -75,7 +75,7 @@
         <label>*Requirement 3</label>
         <input type="text" class="reqinp" [formControl]="reqthreecntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" style="width: 40%;border-color: black; margin-top: 10px;margin-left: 27%;"
+        <input type="text" (keypress)="numberOnly($event)" style="width: 40%;border-color: black; margin-top: 10px;margin-left: 27%;"
           placeholder="Units needed" [formControl]="unitthreecntrl">
       </div><br>
     </div>
@@ -93,13 +93,13 @@
         <label>*Requirement 1</label>
         <input type="text" class="reqinp" [formControl]="reqonecntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" class="form-control" placeholder="Units needed" [formControl]="unitonecntrl">
+        <input type="text" (keypress)="numberOnly($event)" class="form-control" placeholder="Units needed" [formControl]="unitonecntrl">
       </div><br>
       <div class="col">
         <label>*Requirement 2</label>
         <input type="text" class="reqinp" [formControl]="reqtwocntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" class="form-control" placeholder="Units needed" [formControl]="unittwocntrl">
+        <input type="text" (keypress)="numberOnly($event)" class="form-control" placeholder="Units needed" [formControl]="unittwocntrl">
       </div>
     </div><br>
 
@@ -108,13 +108,13 @@
         <label>*Requirement 3</label>
         <input type="text" class="reqinp" [formControl]="reqthreecntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" class="form-control" placeholder="Units needed" [formControl]="unitthreecntrl">
+        <input type="text" (keypress)="numberOnly($event)" class="form-control" placeholder="Units needed" [formControl]="unitthreecntrl">
       </div><br>
       <div class="col">
         <label>*Requirement 4</label>
         <input type="text" class="reqinp" [formControl]="reqfourcntrl"><br>
         <!-- <label>Units needed</label> -->
-        <input type="number" class="form-control" placeholder="Units needed" [formControl]="unitfourcntrl">
+        <input type="text" (keypress)="numberOnly($event)" class="form-control" placeholder="Units needed" [formControl]="unitfourcntrl">
       </div>
     </div>
 
@@ -131,51 +131,23 @@
 
 
 <form class="form1" [formGroup]="orgform" *ngIf="reqq == false">
-  <label>Type of organization:</label>
-  <input type="text" class="form-control" formControlName="typeorg">
+  <!-- <label>Type of organization:</label> -->
+  <input type="text" class="form-control" formControlName="typeorg" placeholder="Type of organization">
   <div *ngIf="typeerror" class="text-danger">organization type required!</div>
-  <label>Name of organization:</label>
-  <input type="text" class="form-control" formControlName="nameorg">
+  <!-- <label>Name of organization:</label> -->
+  <input type="text" class="form-control" placeholder="Name of organization" formControlName="nameorg">
   <div *ngIf="nameerror" class="text-danger">organization name required!</div>
-  <label>Address:</label>
-  <input type="text" class="form-control" formControlName="addresscntrl">
+  <!-- <label>Address:</label> -->
+  <input type="text" class="form-control" placeholder="Address" formControlName="addresscntrl">
   <div *ngIf="addresserror" class="text-danger">address required!</div>
-  <label>Phone number :</label>
-  <input type="text" class="form-control" maxlength="10" (keypress)="numberOnly($event)"
+  <!-- <label>Phone number :</label> -->
+  <input type="text" class="form-control" placeholder="Phone number" maxlength="10" (keypress)="numberOnly($event)"
     formControlName="phnumbercntrl">
-  <div *ngIf="phnerror" class="text-danger">phone number required!</div>
-  <label>No.of requirements:</label>
-  <input type="number" class="form-control" formControlName="reqcntrl">
+  <div *ngIf="phnerror" class="text-danger">Valid phone number required!</div>
+  <!-- <label>No.of requirements:</label> -->
+  <input type="text" placeholder="No.of requirements" (keypress)="numberOnly($event)" class="form-control" formControlName="reqcntrl">
   <div *ngIf="reqerror" class="text-danger">no:of requirements required!</div>
   <div *ngIf="reqcounterror" class="text-danger">requirements should not more than 4!</div>
   <button type="button" class="btn btn-info" id="reqbtn" (click)="reqclk()">Go to requirements section</button>
 </form>
 
-<!-- <button type="button" *ngIf="reqq" style="color: white;background-color: blueviolet;width: 95px;margin-left: 65px;"
-  (click)="backtoreq()">Back</button> -->
-
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          Donation Request received successfully.
-        </h5>
-        <button type="button" (click)="gotohome()" style="margin-left: 215px;" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- <div class="modal-body">
-          Completed
-        </div> -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="gotohome()" data-bs-dismiss="modal">Close</button>
-
-      </div>
-    </div>
-  </div>
-</div>

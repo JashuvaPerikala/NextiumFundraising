@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { FundraiserService } from '../fundraiser.service';
 import { ToastrService } from 'ngx-toastr';
@@ -25,8 +25,9 @@ export class UploadimageComponent implements OnInit {
   deliver = new FormGroup({
     ufirstName: new FormControl(''),
     ulastName: new FormControl(''),
-    uemail: new FormControl(''),
-    uNumber: new FormControl(''),
+    uemail: new FormControl('', [Validators.required, Validators.email,]),
+
+    uNumber: new FormControl(),
     uaddress: new FormControl(''),
     ucity: new FormControl(''),
     ustate: new FormControl(''),
@@ -47,6 +48,12 @@ export class UploadimageComponent implements OnInit {
   cntryerror: boolean = false;
   selectedFileName: any;
   orgname: string = '';
+  byteCodedata: any;
+  doctytpe: any;
+  docname: any;
+  pagesize: any;
+  byteArray: any;
+  invalidmailerror : boolean = false;
 
   constructor(private service: FundraiserService, private toast: ToastrService, private router: Router) {
 
@@ -57,61 +64,79 @@ export class UploadimageComponent implements OnInit {
       if (x !== null && x !== undefined) {
         this.orgname = x.name;
         this.chkdreq = x.requirements?.$values?.filter((x: { checked: boolean; }) => x.checked == true);
-        this.chkdreq.filter((x: any) => { x.unitsdonatecntrl = new FormControl(x.unitsdonatecntrl) })
+        this.chkdreq.filter((x: any) => { x.unitsdonatecntrl = new FormControl(0) })
       }
-      console.log(this.chkdreq)
+      else{
+        this.service.senddonclk(null);
+        return;
+      }
+      // console.log(this.chkdreq)
     }))
 
   }
 
-  handleFileInput1(event: any) {
-    var reader: FileReader = new FileReader();
-    this.selectedFileName = event.target.files[0].name;
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = this.handleReaderLoaded1.bind(this);
-  }
-  handleFileInput2(event: any) {
-    var reader: FileReader = new FileReader();
-    this.selectedFileName = event.target.files[0].name;
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = this.handleReaderLoaded2.bind(this);
-  }
-  handleFileInput3(event: any) {
-    var reader: FileReader = new FileReader();
-    this.selectedFileName = event.target.files[0].name;
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = this.handleReaderLoaded3.bind(this);
-  }
-  handleFileInput4(event: any) {
-    var reader: FileReader = new FileReader();
-    this.selectedFileName = event.target.files[0].name;
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = this.handleReaderLoaded4.bind(this);
-  }
+  // handleFileInput1(event: any) {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files.length > 0) {
+  //     const file = input.files[0];
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       const arrayBuffer = reader.result as ArrayBuffer;
+  //       this.byteArray = new Uint8Array(arrayBuffer);
+  //       console.log(this.byteArray)
+  //     };
+  //     reader.readAsArrayBuffer(file);
+  //   }
 
-  handleReaderLoaded1(e: any) {
-    this.imageUrl1 = e.target.result;
-    $('#imageUrl1').attr("src", e.target.result);
-    $("#imageUrl1").show();
-  }
+  //   var reader: FileReader = new FileReader();
+  //   this.selectedFileName = event.target.files[0].name;
+  //   reader.readAsDataURL(event.target.files[0]);
+  //   reader.onload = this.handleReaderLoaded1.bind(this);
 
-  handleReaderLoaded2(e: any) {
-    this.imageUrl2 = e.target.result;
-    $('#imageUrl2').attr("src", e.target.result);
-    $("#imageUrl2").show();
-  }
+  // }
 
-  handleReaderLoaded3(e: any) {
-    this.imageUrl3 = e.target.result;
-    $('#imageUrl3').attr("src", e.target.result);
-    $("#imageUrl3").show();
-  }
+  // handleFileInput2(event: any) {
+  //   var reader: FileReader = new FileReader();
+  //   this.selectedFileName = event.target.files[0].name;
+  //   reader.readAsDataURL(event.target.files[0]);
+  //   reader.onload = this.handleReaderLoaded2.bind(this);
+  // }
+  // handleFileInput3(event: any) {
+  //   var reader: FileReader = new FileReader();
+  //   this.selectedFileName = event.target.files[0].name;
+  //   reader.readAsDataURL(event.target.files[0]);
+  //   reader.onload = this.handleReaderLoaded3.bind(this);
+  // }
+  // handleFileInput4(event: any) {
+  //   var reader: FileReader = new FileReader();
+  //   this.selectedFileName = event.target.files[0].name;
+  //   reader.readAsDataURL(event.target.files[0]);
+  //   reader.onload = this.handleReaderLoaded4.bind(this);
+  // }
 
-  handleReaderLoaded4(e: any) {
-    this.imageUrl4 = e.target.result;
-    $('#imageUrl4').attr("src", e.target.result);
-    $("#imageUrl4").show();
-  }
+  // handleReaderLoaded1(e: any) {
+  //   this.imageUrl1 = e.target.result;
+  //   $('#imageUrl1').attr("src", e.target.result);
+  //   $("#imageUrl1").show();
+  // }
+
+  // handleReaderLoaded2(e: any) {
+  //   this.imageUrl2 = e.target.result;
+  //   $('#imageUrl2').attr("src", e.target.result);
+  //   $("#imageUrl2").show();
+  // }
+
+  // handleReaderLoaded3(e: any) {
+  //   this.imageUrl3 = e.target.result;
+  //   $('#imageUrl3').attr("src", e.target.result);
+  //   $("#imageUrl3").show();
+  // }
+
+  // handleReaderLoaded4(e: any) {
+  //   this.imageUrl4 = e.target.result;
+  //   $('#imageUrl4').attr("src", e.target.result);
+  //   $("#imageUrl4").show();
+  // }
 
   nextclk() {
     let count = 0
@@ -139,7 +164,15 @@ export class UploadimageComponent implements OnInit {
       this.emailerro = false;
     }
 
-    if (this.deliver.controls['uNumber'].value == '') {
+    if (this.emailerro == false && this.deliver.controls['uemail'].value?.includes('@gmail.com')) {
+      this.invalidmailerror = false;
+    }
+    else {
+      this.invalidmailerror = true;
+      count++
+    }
+
+    if (Number(this.deliver.controls['uNumber'].value?.length != 10) || this.deliver.controls['uNumber'].value.length == '') {
       this.phnnumberr = true;
       count++
     }
@@ -195,6 +228,11 @@ export class UploadimageComponent implements OnInit {
 
   }
 
+  gotouserdetails() {
+    this.donform = true;
+
+  }
+
 
 
   donorsubmit() {
@@ -202,14 +240,14 @@ export class UploadimageComponent implements OnInit {
     obj.firstName = this.deliver.controls['ufirstName'].value;
     obj.lastName = this.deliver.controls['ulastName'].value;
     obj.email = this.deliver.controls['uemail'].value;
-    obj.phoneNumber = this.deliver.controls['uNumber'].value;
+    obj.phoneNumber = this.deliver.controls['uNumber'].value.toString();
     obj.address = this.deliver.controls['uaddress'].value;
     obj.city = this.deliver.controls['ucity'].value;
     obj.state = this.deliver.controls['ustate'].value;
     obj.zipCode = this.deliver.controls['uzipcode'].value;
     obj.country = this.deliver.controls['ucountryname'].value;
     obj.donations = []
-    console.log(this.chkdataQueryList)
+    //console.log(this.chkdataQueryList)
     if (this.chkdataQueryList) {
       this.chkdataQueryList['_results'].forEach((x: any, i: number) => {
         // if (x.nativeElement.checked == true) {
@@ -222,17 +260,26 @@ export class UploadimageComponent implements OnInit {
         unitsdon["organization_Id"] = this.chkdreq[i].organization_Id;
         unitsdon["requirement_Id"] = this.chkdreq[i].requirement_Id;
         unitsdon["requirementName"] = this.chkdreq[i].requirement;
-        unitsdon["unitsDonated"] = this.chkdreq[i].unitsdonatecntrl.value;
+        unitsdon["unitsDonated"] = Number(this.chkdreq[i].unitsdonatecntrl.value);
         unitsdon["donationType"] = 'Goods';
+        // if(this.byteArray != null || this.byteArray!= undefined){
+        //   unitsdon["DonatedImage"] = [...this.byteArray];
+        // }else{
+        //   unitsdon["DonatedImage"] = '';
+        // }
+        
         obj.donations.push(unitsdon)
 
         // }
       })
     }
     this.service.Donors(obj).subscribe(x => {
-      if (x) {
-        this.toast.success('Donations Submitted Successfully.')
-
+      if (x.message == "Donation Successful") {
+        this.toast.success(x.message);
+        this.service.sendfooterclk('overview/home');
+      }
+      else {
+        this.toast.error(x.message)
       }
     })
   }
@@ -243,6 +290,46 @@ export class UploadimageComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  getcontdetails() {
+    if (this.deliver.controls['uNumber'].value?.length == 10) {
+
+      this.service.Phoneget(this.deliver.controls['uNumber'].value).subscribe(x => {
+        if (x) {
+          this.deliver.controls['ufirstName'].setValue(x.$values[0]?.firstName);
+          this.deliver.controls['ulastName'].setValue(x.$values[0]?.lastName);
+          this.deliver.controls['uemail'].setValue(x.$values[0]?.email);
+          this.deliver.controls['uaddress'].setValue(x.$values[0]?.address);
+          this.deliver.controls['ucity'].setValue(x.$values[0]?.city);
+          this.deliver.controls['ustate'].setValue(x.$values[0]?.state);
+          this.deliver.controls['uzipcode'].setValue(x.$values[0]?.zipCode);
+          this.deliver.controls['ucountryname'].setValue(x.$values[0]?.country);
+
+        }
+      })
+
+    }
+
+  }
+
+
+
+  // readFile(file: any) {
+  //   const reader = new FileReader();
+  //   reader.onload = (e: any) => {
+  //     e.target.result
+  //     this.byteCodedata = e.target.result;
+  //     console.log('Byte code:', this.byteCodedata);
+
+  //   }
+  //   reader.readAsArrayBuffer(file);
+
+
+  // }
+
+  gotoneeds() {
+    this.router.navigate(['overview/need']);
   }
 
 

@@ -10,13 +10,14 @@ import { InformationComponent } from './information/information.component';
 import { CauseComponent } from './cause/cause.component';
 import { DashcenterComponent } from './dashcenter/dashcenter.component';
 import { OverviewComponent } from './overview/overview.component';
+import { PaymentComponent } from './payment/payment.component';
 
 
 const routes: Routes = [
   // { path: '', redirectTo: '/fundraisers', pathMatch: 'full' },
   // { path: 'fundraisers', component: FundraiserListComponent }
 
-  {path:'',redirectTo:'/overview/home',pathMatch: 'full'},
+  {path:'',pathMatch: 'full',redirectTo:'/overview/home'},
   {path:'overview',component:OverviewComponent,children:[
     {path:'home',component:DashcenterComponent},
     {path:'navbar',component:DashNavbarComponent},
@@ -26,7 +27,8 @@ const routes: Routes = [
     {path:'requirements',component:RequirementsComponent},
     {path:'receivedonations',component:ReceivedonationsComponent},
     {path:'information',component:InformationComponent},
-    {path:'cause',component:CauseComponent}
+    {path:'cause',component:CauseComponent},
+    {path:'payment',component:PaymentComponent}
   ]},
   // {path:'home',component:DashboardComponent},
   // {path:'navbar',component:DashNavbarComponent},

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FundraiserService } from '../fundraiser.service';
-
+import { Subject, Subscription, takeUntil } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+declare var $: any
 
 @Component({
   selector: 'app-dash-navbar',
@@ -16,19 +18,51 @@ export class DashNavbarComponent implements OnInit {
   donateactive: string = '';
   recieveactive: string = '';
 
+  spinnerTime:number =0;
+
   regForm: FormGroup;
   loginForm: FormGroup;
   firstnameerror: boolean = false;
-  lastnameerror : boolean = false;
-  usernameerror:boolean = false;
+  lastnameerror: boolean = false;
+  usernameerror: boolean = false;
   emailerror: boolean = false;
   passworderror: boolean = false;
   reppaswrderror: boolean = false;
   loginmailerr: boolean = false;
   loginpswrderr: boolean = false;
+  private subscription: Subscription = new Subscription();
+  destroySubject$: Subject<void> = new Subject();
   headrname = '';
+  loginuserName: any;
+  usernametrue: boolean = false;
+  invalidmailerror: boolean = false;
+  frgteror: Boolean = false;
+  forgtinputcntrl = new FormControl('');
+  newpswdCntrl = new FormControl('');
+  repeatpaswrdCntrl = new FormControl('');
+  usermail: any;
 
-  constructor(private router: Router, private fb: FormBuilder, private service: FundraiserService) {
+  visible:boolean = false;
+  changetype:boolean = true;
+
+  visible1:boolean = false;
+  changetype1:boolean = true;
+
+  visible2:boolean = false;
+  changetype2:boolean = true;
+
+  visible3:boolean = false;
+  changetype3:boolean = true;
+
+  visible4:boolean = false;
+  changetype4:boolean = true;
+
+  samepasserror: boolean = false;
+
+  spinner:boolean = false;
+  donORreciev: string = '';
+
+  constructor(private router: Router, private fb: FormBuilder, private service: FundraiserService, private toast: ToastrService) {
 
     this.regForm = this.fb.group({
       UserName: ['', [Validators.required]],
@@ -48,35 +82,42 @@ export class DashNavbarComponent implements OnInit {
 
   ngOnInit(): void {
 
+
     if (this.router.url.includes('home')) {
       this.homeactive = 'active'
       this.headrname = 'Home'
     }
-    else if (this.router.url.includes("information")) {
-      this.headrname = 'About Us'
-    }
-    else if (this.router.url.includes("cause")) {
-      this.headrname = 'Cause'
-    }
-    else if (this.router.url.includes("need")) {
-      this.headrname = 'Donate-Now'
-    }
-    else if (this.router.url.includes("receivedonations")) {
-      this.headrname = 'Recieve Donations'
-    }
-    else {
-      this.homeactive = ''
-      this.headrname = ''
-    }
 
+    this.subscription.add(this.service.GetfootData$.subscribe(x => {
+      if (x) {
+        if (x == 'overview/need' && this.usernametrue == true) {
+          this.MenuClk('donatenow');
+        }
+        if (x == 'overview/home') {
+          this.MenuClk('home');
+        }
+        else {
+          this.loginForm.controls['loginemail'].setValue('');
+          this.loginForm.controls['loginpassword'].setValue('');
+          $('#signinmodal').modal('show');
+        }
+      }
+
+
+    })
+
+    )
   }
 
 
 
   MenuClk(type: string) {
     this.homeactive = '';
-    this.headrname = ''
+    this.headrname = '';
+    this.donORreciev = ''
     if (type == 'home') {
+      $('#paswrdResetmodal').modal('hide');
+      $('#forgotmodal').modal('hide');
       this.router.navigate(['overview/home']);
       this.homeactive = 'active'
       this.headrname = 'Home'
@@ -104,6 +145,13 @@ export class DashNavbarComponent implements OnInit {
       this.causeactive = 'active'
     }
     else if (type == 'donatenow') {
+      this.donORreciev = 'donatenow'
+      if (this.usernametrue == false) {
+        // $('#signinmodal').modal('show');
+        this.signinnavclk();
+        return;
+      }
+      this.service.senddonclk(this.usernametrue);
       this.router.navigate(['overview/need']);
       this.headrname = 'Donate Now'
       this.homeactive = ''
@@ -113,6 +161,13 @@ export class DashNavbarComponent implements OnInit {
       this.donateactive = 'active'
     }
     else if (type == 'Recievedonation') {
+      this.donORreciev = 'Recievedonation'
+      if (this.usernametrue == false) {
+        // $('#signinmodal').modal('show');
+        this.signinnavclk();
+        return;
+      }
+      this.service.senddonclk(this.usernametrue);
       this.router.navigate(['overview/receivedonations']);
       this.headrname = 'Recieve Donations'
       this.aboutactive = ''
@@ -122,42 +177,33 @@ export class DashNavbarComponent implements OnInit {
       this.recieveactive = 'active'
     }
 
-    // switch (type) {
-    //   case 'home':
-
-    //     break;
-
-    //   case 'about':
-
-    //     break;
-
-    //   case 'cause':
-
-    //     break;
-
-    //   case 'donatenow':
-
-    //     break;
-
-    //   case 'Recievedonation':
-
-    //     break;
-
-    // }
   }
 
   signupnavclk() {
+    this.visible1 = false;
+    this.changetype1 = true;
+    this.visible2 = false;
+    this.changetype2 = true;
+    $('#signupmodal').modal('show');
+    this.regForm.controls['firstName'].setValue('');
+    this.regForm.controls['lastName'].setValue('');
     this.regForm.controls['UserName'].setValue('');
     this.regForm.controls['Useremail'].setValue('');
     this.regForm.controls['Userpassword'].setValue('');
     this.regForm.controls['Repeatpassword'].setValue('');
     this.firstnameerror = false;
+    this.lastnameerror = false;
+    this.usernameerror = false;
+    this.invalidmailerror = false;
     this.emailerror = false;
     this.passworderror = false;
     this.reppaswrderror = false;
   }
 
   signinnavclk() {
+    this.visible = false;
+    this.changetype = true;
+    $('#signinmodal').modal('show');
     this.loginForm.controls['loginemail'].setValue('');
     this.loginForm.controls['loginpassword'].setValue('');
     this.loginmailerr = false;
@@ -185,6 +231,14 @@ export class DashNavbarComponent implements OnInit {
     } else {
       this.emailerror = false;
     }
+
+    if (this.emailerror == false && this.regForm.controls['Useremail'].value.includes('@gmail.com')) {
+      this.invalidmailerror = false;
+    }
+    else {
+      this.invalidmailerror = true;
+    }
+
     if (this.regForm.controls['Userpassword'].value == '') {
       this.passworderror = true;
     } else {
@@ -196,6 +250,18 @@ export class DashNavbarComponent implements OnInit {
       this.reppaswrderror = false;
     }
 
+    if(this.regForm.controls['Userpassword'].value != this.regForm.controls['Repeatpassword'].value){
+      this.samepasserror = true;
+    }else{
+      this.samepasserror = false;
+    }
+
+    if (this.firstnameerror == true || this.lastnameerror == true || this.usernameerror == true || this.samepasserror == true ||
+      this.emailerror == true || this.invalidmailerror == true || this.passworderror == true || this.reppaswrderror == true) {
+      return;
+
+    }
+
     const obj = Object.assign({})
     obj.firstName = this.regForm.controls['firstName'].value;
     obj.lastName = this.regForm.controls['lastName'].value;
@@ -203,14 +269,19 @@ export class DashNavbarComponent implements OnInit {
     obj.username = this.regForm.controls['Useremail'].value;
     obj.password = this.regForm.controls['Userpassword'].value;
     this.service.Signup(obj).subscribe(x => {
-      if (x) {
-
-        this.router.navigate(['']);
+      if (x?.message == "User registered successfully.") {
+        this.toast.show(x?.message);
+        $('#signupmodal').modal('hide');
+        this.router.navigate(['overview/home']);
+      }
+      else {
+        this.toast.warning(x?.message);
       }
     })
   }
 
   signinclk() {
+    this.loginuserName = '';this.spinner = true;this.spinnerTime = new Date().getTime();
     if (this.loginForm.controls['loginemail'].value == '') {
       this.loginmailerr = true;
     }
@@ -225,20 +296,145 @@ export class DashNavbarComponent implements OnInit {
       this.loginpswrderr = false;
     }
 
+    if (this.loginForm.controls['loginemail'].value == '' || this.loginForm.controls['loginpassword'].value == '') {
+      return;
+    }
+
     const obj = Object.assign({})
     obj.username = this.loginForm.controls['loginemail'].value;
     obj.password = this.loginForm.controls['loginpassword'].value;
-    this.service.login(obj).subscribe(x => {
+    this.service.login(obj).pipe(takeUntil(this.destroySubject$)).subscribe(x => {
+      this.spinner = false;this.spinnerTime = 0;
       if (x) {
-        this.router.navigate(['']);
+        if (x?.message == "Login successful") {
+          this.loginuserName = x?.userName
+          this.usernametrue = true;
+          this.toast.success(x?.message);
+          $('#signinmodal').modal('hide');
+          if(this.donORreciev == 'donatenow'){
+            this.MenuClk('donatenow');
+          }
+          else if(this.donORreciev == 'Recievedonation'){
+            this.MenuClk('Recievedonation');
+          }
+          
+        } else {
+          this.usernametrue = false;
+          this.toast.error(x?.message);
+        }
 
       }
     })
   }
 
-  // gotohome(){
-  //   this.router.navigate(['/']);
-  // }
+  logotclk() {
+    this.usernametrue = false;
+    this.router.navigate(['overview/home']);
+    this.MenuClk('home');
+
+  }
+
+  registerclk() {
+    $('#signinmodal').modal('hide');
+    $('#signupmodal').modal('show');
+  }
+
+  forgotclk() {
+    this.frgteror = false;
+    this.forgtinputcntrl.setValue('');
+    $('#signinmodal').modal('hide');
+    $('#forgotmodal').modal('show');
+
+  }
+
+  continueclk() {
+    this.visible3 = false
+    this.visible4 = false
+    this.changetype4 = true
+    this.changetype3 = true
+
+    this.usermail = ''
+    if (this.forgtinputcntrl.value == '') {
+      this.frgteror = true;
+      return;
+    }
+    const obj = Object.assign({})
+    obj.EmailOrUserName = this.forgtinputcntrl.value
+
+    this.service.forgotpasswordservice(obj).subscribe(x => {
+      if (x?.message == 'Please Reset') {
+        this.usermail = x?.email;
+        $('#forgotmodal').modal('hide');
+        $('#paswrdResetmodal').modal('show');
+      }
+      else {
+        this.toast.error(x?.message)
+      }
+
+    })
+
+  }
+
+  resetpaswrd(){
+    const obj = Object.assign({})
+    obj.Email = this.usermail;
+    obj.password = this.newpswdCntrl.value;
+    if(this.newpswdCntrl.value == '' || this.repeatpaswrdCntrl.value == ''){
+      this.toast.warning('please fill the inputs');
+      return;
+    }
+
+    else if(this.newpswdCntrl.value != this.repeatpaswrdCntrl.value ){
+      this.toast.warning('password should be same');
+      return;
+    }
+
+    this.service.Userupdatepaswrd(obj).subscribe(x=>{
+      if(x.message = "Password Updated Successfully"){
+        this.toast.success("Password Updated Successfully");
+        $('#paswrdResetmodal').modal('hide');
+        $('#signinmodal').modal('show');
+      }
+      else{
+        this.toast.error(x?.message);
+      }
+    })
+  }
+
+  viewpswrd(){
+    this.visible = !this.visible;
+    this.changetype = !this.changetype;
+  }
+
+  viewpswrd1(){
+    this.visible1 = !this.visible1;
+    this.changetype1 = !this.changetype1;
+  }
+
+  viewpswrd2(){
+    this.visible2 = !this.visible2;
+    this.changetype2 = !this.changetype2;
+  }
+
+  viewpswrd3(){
+    this.visible3 = !this.visible3;
+    this.changetype3 = !this.changetype3;
+  }
+
+  viewpswrd4(){
+    this.visible4 = !this.visible4;
+    this.changetype4 = !this.changetype4;
+  }
+
+
+
+  ngOnDestroy(): void {
+
+    this.subscription.unsubscribe();
+    this.destroySubject$.next();
+    this.destroySubject$.complete();
+
+  }
 
 
 

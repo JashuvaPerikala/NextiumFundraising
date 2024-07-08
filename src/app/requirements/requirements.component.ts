@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { FundraiserService } from '../fundraiser.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 @Component({
   selector: 'app-requirements',
@@ -32,10 +33,10 @@ export class RequirementsComponent implements OnInit {
   unittwocntrl = new FormControl('');
   unitthreecntrl = new FormControl('');
   unitfourcntrl = new FormControl('');
-  orgnamedisplay: any ='';
+  orgnamedisplay: any = '';
 
 
-  constructor(private fb: FormBuilder, private service: FundraiserService,private router: Router) {
+  constructor(private fb: FormBuilder, private service: FundraiserService, private router: Router, private toast: ToastrService) {
 
     this.orgform = this.fb.group({
       typeorg: [''],
@@ -60,9 +61,6 @@ export class RequirementsComponent implements OnInit {
   }
 
   reqclk() {
-
-    
-
     if (this.orgform.controls['typeorg'].value == '') {
       this.typeerror = true;
     } else {
@@ -78,7 +76,7 @@ export class RequirementsComponent implements OnInit {
     } else {
       this.addresserror = false;
     }
-    if (this.orgform.controls['phnumbercntrl'].value == '') {
+    if (this.orgform.controls['phnumbercntrl'].value == '' || Number(this.orgform.controls['phnumbercntrl'].value?.length != 10)) {
       this.phnerror = true;
     } else {
       this.phnerror = false;
@@ -135,30 +133,30 @@ export class RequirementsComponent implements OnInit {
     obj.type = this.orgform.controls['typeorg'].value;
     obj.name = this.orgform.controls['nameorg'].value;
     obj.address = this.orgform.controls['addresscntrl'].value;
-    obj.phone_number = this.orgform.controls['phnumbercntrl'].value;
+    obj.phone_number = this.orgform.controls['phnumbercntrl'].value.toString();
     obj.no_of_requirements = Number(this.orgform.controls['reqcntrl'].value);
 
-    
+
     if (this.itterate == 1) {
       const reqobj = [
         {
           requirement: this.reqonecntrl.value,
-          units_needed: this.unitonecntrl.value,
+          units_needed: Number(this.unitonecntrl.value),
           // organization: this.orgform.controls['nameorg'].value
         }
       ]
-      obj.requirements = [reqobj]
-    } 
+      obj.requirements = reqobj
+    }
     else if (this.itterate == 2) {
       const reqobj = [
         {
           requirement: this.reqonecntrl.value,
-          units_needed: this.unitonecntrl.value,
+          units_needed: Number(this.unitonecntrl.value),
           // organization: this.orgform.controls['nameorg'].value
         },
         {
           requirement: this.reqtwocntrl.value,
-          units_needed: this.unittwocntrl.value,
+          units_needed: Number(this.unittwocntrl.value),
           // organization: this.orgform.controls['nameorg'].value
         }
       ]
@@ -168,57 +166,65 @@ export class RequirementsComponent implements OnInit {
       const reqobj = [
         {
           requirement: this.reqonecntrl.value,
-          units_needed: this.unitonecntrl.value,
+          units_needed: Number(this.unitonecntrl.value),
           // organization: this.orgform.controls['nameorg'].value
         },
         {
           requirement: this.reqtwocntrl.value,
-          units_needed: this.unittwocntrl.value,
+          units_needed: Number(this.unittwocntrl.value),
           // organization: this.orgform.controls['nameorg'].value
-        },{
+        }, {
           requirement: this.reqthreecntrl.value,
-          units_needed: this.unitthreecntrl.value,
+          units_needed: Number(this.unitthreecntrl.value),
           // organization: this.orgform.controls['nameorg'].value
         }
       ]
-      obj.requirements = [reqobj]
+      obj.requirements = reqobj
     }
     else if (this.itterate == 4) {
       const reqobj = [
         {
           requirement: this.reqonecntrl.value,
-          units_needed: this.unitonecntrl.value,
+          units_needed: Number(this.unitonecntrl.value),
           // organization: this.orgform.controls['nameorg'].value
         },
         {
           requirement: this.reqtwocntrl.value,
-          units_needed: this.unittwocntrl.value,
+          units_needed: Number(this.unittwocntrl.value),
           // organization: this.orgform.controls['nameorg'].value
         },
         {
           requirement: this.reqthreecntrl.value,
-          units_needed: this.unitthreecntrl.value,
+          units_needed: Number(this.unitthreecntrl.value),
           // organization: this.orgform.controls['nameorg'].value
         },
         {
           requirement: this.reqfourcntrl.value,
-          units_needed: this.unitfourcntrl.value,
+          units_needed: Number(this.unitfourcntrl.value),
           // organization: this.orgform.controls['nameorg'].value
         }
       ]
-      obj.requirements = [reqobj]
+      obj.requirements = reqobj
     }
 
-    
-    this.service.OrganizationReg(obj).subscribe(x => {
-      if (x) {
+    // if(){
 
+    // }
+
+
+    this.service.OrganizationReg(obj).subscribe(x => {
+      if (x?.message == 'Your Donation Request Successfully Submitted') {
+        this.toast.success(x?.message)
+        this.service.sendfooterclk('overview/home');
+      }
+      else {
+        this.toast.error(x?.message);
       }
     })
 
   }
 
-  gotohome(){
+  gotohome() {
     this.router.navigate(['overview/home']);
   }
 

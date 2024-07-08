@@ -1,63 +1,83 @@
-header{
-    padding: 10px;
-    background-color:rgb(66, 66, 203);
- }
- .logo{
-    width:114px;
- }
- .logo:hover{
-    cursor: pointer;
- }
+header {
+   padding: 10px;
+   background-color: rgb(66, 66, 203);
+}
 
- .desktop-menu{
-    margin-top: 24px;
- }
- .desktop-menu ul{
-    padding: 0;
-    margin:0;
- }
- .desktop-menu ul li {
-    list-style-type: none;
-    color:white;
-    display: inline-block;
-    font-size: 18px;
-    margin-left: 26px;
- }
+.logo {
+   width: 114px;
+}
 
- .desktop-menu ul li a:hover{
-    font-size: 19px;
-    font-weight: bold;
-    cursor: pointer;
-    color: yellow !important;
-    transition: 0.4s ease-in-out;
- }
- .menu-icon{
+.logo:hover {
+   cursor: pointer;
+}
+
+.desktop-menu {
+   margin-top: 24px;
+}
+
+.desktop-menu ul {
+   padding: 0;
+   margin: 0;
+}
+
+.desktop-menu ul li {
+   list-style-type: none;
+   color: white;
+   display: inline-block;
+   font-size: 18px;
+   margin-left: 26px;
+}
+
+.desktop-menu ul li a:hover {
+   font-size: 19px;
+   font-weight: bold;
+   cursor: pointer;
+   color: yellow !important;
+   transition: 0.4s ease-in-out;
+}
+
+.menu-icon {
    display: none;
- }
+}
 
 
 
-  @media screen and (min-width:128px) and (max-width : 900px){
+@media screen and (min-width:128px) and (max-width : 900px) {}
 
-   
-
-  }
-
- ul li a.active{
+ul li a.active {
    color: #36ff40 !important;
    text-decoration: none;
 }
-ul li a{
+
+ul li a {
    color: white !important;
    text-decoration: none;
 }
 
-#homeid{
+#homeid {
    text-decoration: none;
-   color :white
+   color: white
 }
-a{
+
+a {
    color: white !important;
+}
+
+.frgt {
+   color: blue !important;
+   text-decoration: none;
+   cursor: pointer;
+}
+
+.registr{
+   color: red !important;
+   text-decoration: none;
+   cursor: pointer;
+   font-size: large;
+}
+
+.terms{
+   color: blue !important;
 }
 
 // #homeid:hover{
@@ -70,31 +90,65 @@ a{
 
 // login styles
 
-.btnsshow{
+.btnsshow {
    background-color: rgb(203, 147, 35);
    color: black;
    padding: 6px;
    margin: 3px;
    border: none;
    cursor: pointer;
- }
- 
- button:hover {
+}
+
+.dot {
+   height: 19px;
+   width: 18px;
+   background-color: #2de42d;
+   border-radius: 50%;
+   display: inline-block;
+   margin-top: -33px;
+   margin-left: 75px;
+}
+
+//  button:hover {
+//    opacity: 0.8;
+//    background-color:  white;
+//    color: blue;
+//    transition: 0.4s ease-in-out;
+//  }
+
+#logoutid:hover {
    opacity: 0.8;
-   background-color:  white;
+   background-color: #2de42d;
+   color: white;
+   transition: 0.4s ease-in-out;
+   font-weight: bold;
+}
+
+#signinid:hover {
+   opacity: 0.8;
+   background-color: white;
    color: blue;
    transition: 0.4s ease-in-out;
- }
+}
 
- .signin{
+#signupid:hover {
+   opacity: 0.8;
+   background-color: white;
+   color: blue;
+   transition: 0.4s ease-in-out;
+}
+
+.signin {
    text-align: center;
    width: 448px;
- }
+}
 
- h3{
+h3 {
    color: yellow;
-   margin-left: 16%;
+   margin-left: 11%;
    margin-top: -37px;
-   position: absolute;font-style: italic;
-  
- }
+   position: absolute;
+   font-style: italic;
+
+}
+
