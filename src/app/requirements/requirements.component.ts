@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { FundraiserService } from '../fundraiser.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 declare var $: any;
 @Component({
   selector: 'app-requirements',
@@ -35,6 +36,8 @@ export class RequirementsComponent implements OnInit {
   unitfourcntrl = new FormControl('');
   orgnamedisplay: any = '';
 
+  private subscription: Subscription = new Subscription();
+
 
   constructor(private fb: FormBuilder, private service: FundraiserService, private router: Router, private toast: ToastrService) {
 
@@ -49,7 +52,15 @@ export class RequirementsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.subscription.add(this.service.GetdonData$.subscribe(x=>{
+      if(x == null || x == undefined){
+        this.router.navigate(['overview/home']);
+        this.toast.warning('Please Use menu bar links');
+      }
+      if(x == 'fromlogout'){
+        this.router.navigate(['overview/home']);
+      }
+    }))
   }
 
   numberOnly(event: any) {

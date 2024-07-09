@@ -53,7 +53,7 @@ export class UploadimageComponent implements OnInit {
   docname: any;
   pagesize: any;
   byteArray: any;
-  invalidmailerror : boolean = false;
+  invalidmailerror: boolean = false;
 
   constructor(private service: FundraiserService, private toast: ToastrService, private router: Router) {
 
@@ -66,7 +66,10 @@ export class UploadimageComponent implements OnInit {
         this.chkdreq = x.requirements?.$values?.filter((x: { checked: boolean; }) => x.checked == true);
         this.chkdreq.filter((x: any) => { x.unitsdonatecntrl = new FormControl(0) })
       }
-      else{
+      if(x == 'fromlogout'){
+        this.router.navigate(['overview/home']);
+      }
+      else {
         this.service.senddonclk(null);
         return;
       }
@@ -236,6 +239,8 @@ export class UploadimageComponent implements OnInit {
 
 
   donorsubmit() {
+    var count1 = 0;
+    var count2 = 0
     const obj = Object.assign({})
     obj.firstName = this.deliver.controls['ufirstName'].value;
     obj.lastName = this.deliver.controls['ulastName'].value;
@@ -248,14 +253,21 @@ export class UploadimageComponent implements OnInit {
     obj.country = this.deliver.controls['ucountryname'].value;
     obj.donations = []
     //console.log(this.chkdataQueryList)
+
     if (this.chkdataQueryList) {
       this.chkdataQueryList['_results'].forEach((x: any, i: number) => {
         // if (x.nativeElement.checked == true) {
         if (this.chkdreq[i].unitsdonatecntrl.value == '' || this.chkdreq[i].unitsdonatecntrl.value == null ||
           this.chkdreq[i].unitsdonatecntrl.value == undefined) {
-          this.toast.error('Please Enter Units Want ot Donate');
-          return;
+          count1++
         }
+        else if (Number(this.chkdreq[i].unitsdonatecntrl.value) > this.chkdreq[i].units_needed) {
+          count2++
+        }
+
+       
+
+
         const unitsdon = Object.assign({});
         unitsdon["organization_Id"] = this.chkdreq[i].organization_Id;
         unitsdon["requirement_Id"] = this.chkdreq[i].requirement_Id;
@@ -267,21 +279,37 @@ export class UploadimageComponent implements OnInit {
         // }else{
         //   unitsdon["DonatedImage"] = '';
         // }
-        
+
         obj.donations.push(unitsdon)
 
         // }
       })
+      if (count1 != 0) {
+        this.toast.error('Please Enter Units Want ot Donate');
+        return;
+      }
+      else if (count1 == 0 && count2 != 0) {
+        this.toast.warning('units donated should not more than units required');
+        return;
+      }
     }
-    this.service.Donors(obj).subscribe(x => {
-      if (x.message == "Donation Successful") {
-        this.toast.success(x.message);
-        this.service.sendfooterclk('overview/home');
-      }
-      else {
-        this.toast.error(x.message)
-      }
-    })
+
+    if (count1 == 0 && count2 == 0) {
+      this.service.Donors(obj).subscribe(x => {
+        if (x.message == "Donation Successful") {
+          this.toast.success(x.message);
+          this.service.sendfooterclk('overview/home');
+        }
+        else {
+          this.toast.error(x.message)
+        }
+      })
+    }
+    else{
+      obj.donations = [];
+      return;
+    }
+
   }
 
   numberOnly(event: any) {
@@ -296,7 +324,7 @@ export class UploadimageComponent implements OnInit {
     if (this.deliver.controls['uNumber'].value?.length == 10) {
 
       this.service.Phoneget(this.deliver.controls['uNumber'].value).subscribe(x => {
-        if (x) {
+        if (x?.$values) {
           this.deliver.controls['ufirstName'].setValue(x.$values[0]?.firstName);
           this.deliver.controls['ulastName'].setValue(x.$values[0]?.lastName);
           this.deliver.controls['uemail'].setValue(x.$values[0]?.email);
@@ -305,7 +333,16 @@ export class UploadimageComponent implements OnInit {
           this.deliver.controls['ustate'].setValue(x.$values[0]?.state);
           this.deliver.controls['uzipcode'].setValue(x.$values[0]?.zipCode);
           this.deliver.controls['ucountryname'].setValue(x.$values[0]?.country);
-
+        }
+        else if (x?.message == 'phone number not found') {
+          this.deliver.controls['ufirstName'].setValue('');
+          this.deliver.controls['ulastName'].setValue('');
+          this.deliver.controls['uemail'].setValue('');
+          this.deliver.controls['uaddress'].setValue('');
+          this.deliver.controls['ucity'].setValue('');
+          this.deliver.controls['ustate'].setValue('');
+          this.deliver.controls['uzipcode'].setValue('');
+          this.deliver.controls['ucountryname'].setValue('');
         }
       })
 

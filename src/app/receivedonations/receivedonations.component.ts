@@ -21,6 +21,9 @@ export class ReceivedonationsComponent implements OnInit {
         this.router.navigate(['overview/home']);
         this.toast.warning('Please Use menu bar links');
       }
+      if(x == 'fromlogout'){
+        this.router.navigate(['overview/home']);
+      }
     }))
     
   }

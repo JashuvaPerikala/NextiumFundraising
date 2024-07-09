@@ -29,6 +29,9 @@ export class NeedsComponent implements OnInit {
         this.router.navigate(['overview/home']);
         this.toast.warning('Please Use menu bar links');
       }
+      if(x == 'fromlogout'){
+        this.router.navigate(['overview/home']);
+      }
       
     }))
 
@@ -37,6 +40,7 @@ export class NeedsComponent implements OnInit {
   }
 
   GetOrgdetails() {
+    this.orgdata = []
     this.service.GetOrganization().subscribe(x => {
       if (x) {
         this.orgdata = x.$values;
@@ -45,14 +49,19 @@ export class NeedsComponent implements OnInit {
     })
   }
 
-  radchange(event: any, index: any) {
+  radchange(event: any, data: any) {
     if (event.target.checked == true) {
-      this.orgdata.forEach((el: { checked: boolean; }, i: any) => {
-        if (index == i) {
+      this.orgdata.forEach((el:any, i: any) => {
+        if(el.$id == data?.$id){
           el.checked = true;
-        } else {
-          el.checked = false
+        }else{
+          el.checked = false;
         }
+        // if (index == i) {
+        //   el.checked = true;
+        // } else {
+        //   el.checked = false
+        // }
 
       });
 
@@ -80,19 +89,21 @@ export class NeedsComponent implements OnInit {
         this.router.navigate(['overview/uploadimg']);
       }
       else {
-        this.toast.error('Please Select one requirement')
+        this.toast.error('Please Select atleast one requirement')
         return;
       }
 
       const senddtaa = this.orgdata.find((x: { checked: boolean; }) => x.checked == true);
       if (senddtaa) {
         this.service.sendselectedorg(senddtaa);
+      }else{
+        this.service.sendselectedorg(null);
       }
 
 
     }
     else {
-      this.toast.error('Please Select one organization')
+      this.toast.error('Please Select atleast one organization')
       return;
     }
 
