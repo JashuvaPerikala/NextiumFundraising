@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { FundraiserService } from './fundraiser.service';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,11 @@ import { Router } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit{
+  constructor(private service:FundraiserService){}
   ngOnInit(): void {
-    this.router.navigate(['overview/home'])
+    this.router.navigate(['overview/home']);
+    this.service.senddonclk(null);
+    this.service.sendselectedorg(null);
   }
   title = 'NextiumFundraising';
   router = inject(Router)

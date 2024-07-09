@@ -88,7 +88,7 @@
             <label class="form-label" for="form2Example1"> User Name or Email</label>
             <input type="email" id="form2Example1" style="border-color: black;" placeholder="Enter email"
               class="form-control" formControlName="loginemail" />
-            <div class="text-danger" *ngIf="loginmailerr">Email Address required!</div>
+            <!-- <div class="text-danger" *ngIf="loginmailerr">Email Address required!</div> -->
           </div>
 
           <!-- Password input -->
@@ -96,11 +96,9 @@
             <label class="form-label" for="form2Example2">Password</label>
             <input [type]="changetype?'password':'text'" id="form2Example2" style="border-color: black;"
               placeholder="Enter password" class="form-control" formControlName="loginpassword" />
-            <span *ngIf="loginpswrderr == false" style="position: absolute; right: 38px;top: 156px; cursor: pointer;"
+            <span style="position: absolute; right: 38px;top: 156px; cursor: pointer;"
               (click)="viewpswrd()"><i [ngClass]="visible?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
-            <span *ngIf="loginpswrderr == true" style="position: absolute; right: 38px;top: 179px; cursor: pointer;"
-              (click)="viewpswrd()"><i [ngClass]="visible?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
-            <div *ngIf="loginpswrderr" class="text-danger">Password is required!</div>
+            <!-- <div *ngIf="loginpswrderr" class="text-danger">Password is required!</div> -->
           </div>
 
           <!-- 2 column grid layout for inline styling -->
@@ -194,8 +192,9 @@
               <label class="form-label" for="form3Example4c">Password</label>
               <input [type]="changetype1?'password':'text'" id="form3Example4c" style="border-color: black;"
                 placeholder="Enter Password" class="form-control" formControlName="Userpassword" />
-              <span class="" style="position: absolute; right: 71px; top: 365px; cursor: pointer;"
-                (click)="viewpswrd1()"><i [ngClass]="visible1?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
+              <!-- <span class="" style="position: absolute; right: 71px; top: 365px; cursor: pointer;"
+                (click)="viewpswrd1()"><i [ngClass]="visible1?'bi bi-eye' : 'bi bi-eye-slash'"></i></span> -->
+                <input type="checkbox" id="shwoswdchk" (click)="viewpswrd1()">Show Password
               <div class="text-danger" *ngIf="passworderror"> password is required!</div>
             </div>
           </div>
@@ -206,8 +205,9 @@
               <label class="form-label" for="form3Example4cd">Repeat your password</label>
               <input [type]="changetype2?'password':'text'" id="form3Example4cd" style="border-color: black;"
                 placeholder="Repeat Your Password" class="form-control" formControlName="Repeatpassword" />
-              <span class="" style="position: absolute;right: 68px;top: 70%;cursor: pointer;" (click)="viewpswrd2()"><i
-                  [ngClass]="visible2?'bi bi-eye' : 'bi bi-eye-slash'"></i></span>
+              <!-- <span class="" style="position: absolute;right: 68px;top: 70%;cursor: pointer;" (click)="viewpswrd2()"><i
+                  [ngClass]="visible2?'bi bi-eye' : 'bi bi-eye-slash'"></i></span> -->
+                  <input type="checkbox" id="showrpswd" (click)="viewpswrd2()">Show Password
               <div class="text-danger" *ngIf="reppaswrderror">Repeat password is required!</div>
               <div class="text-danger" *ngIf="samepasserror">Password should be same</div>
             </div>

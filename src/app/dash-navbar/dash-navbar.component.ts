@@ -18,7 +18,7 @@ export class DashNavbarComponent implements OnInit {
   donateactive: string = '';
   recieveactive: string = '';
 
-  spinnerTime:number =0;
+  spinnerTime: number = 0;
 
   regForm: FormGroup;
   loginForm: FormGroup;
@@ -42,24 +42,24 @@ export class DashNavbarComponent implements OnInit {
   repeatpaswrdCntrl = new FormControl('');
   usermail: any;
 
-  visible:boolean = false;
-  changetype:boolean = true;
+  visible: boolean = false;
+  changetype: boolean = true;
 
-  visible1:boolean = false;
-  changetype1:boolean = true;
+  visible1: boolean = false;
+  changetype1: boolean = true;
 
-  visible2:boolean = false;
-  changetype2:boolean = true;
+  visible2: boolean = false;
+  changetype2: boolean = true;
 
-  visible3:boolean = false;
-  changetype3:boolean = true;
+  visible3: boolean = false;
+  changetype3: boolean = true;
 
-  visible4:boolean = false;
-  changetype4:boolean = true;
+  visible4: boolean = false;
+  changetype4: boolean = true;
 
   samepasserror: boolean = false;
 
-  spinner:boolean = false;
+  spinner: boolean = false;
   donORreciev: string = '';
 
   constructor(private router: Router, private fb: FormBuilder, private service: FundraiserService, private toast: ToastrService) {
@@ -90,7 +90,7 @@ export class DashNavbarComponent implements OnInit {
 
     this.subscription.add(this.service.GetfootData$.subscribe(x => {
       if (x) {
-        if (x == 'overview/need' && this.usernametrue == true) {
+        if (x == 'overview/need') {
           this.MenuClk('donatenow');
         }
         if (x == 'overview/home') {
@@ -99,7 +99,7 @@ export class DashNavbarComponent implements OnInit {
         else {
           this.loginForm.controls['loginemail'].setValue('');
           this.loginForm.controls['loginpassword'].setValue('');
-          $('#signinmodal').modal('show');
+          // $('#signinmodal').modal('show');
         }
       }
 
@@ -153,6 +153,7 @@ export class DashNavbarComponent implements OnInit {
       }
       this.service.senddonclk(this.usernametrue);
       this.router.navigate(['overview/need']);
+      $('#signinmodal').modal('hide');
       this.headrname = 'Donate Now'
       this.homeactive = ''
       this.aboutactive = ''
@@ -185,6 +186,9 @@ export class DashNavbarComponent implements OnInit {
     this.visible2 = false;
     this.changetype2 = true;
     $('#signupmodal').modal('show');
+    $('#shwoswdchk').prop('checked',false);
+    $('#showrpswd').prop('checked',false);
+
     this.regForm.controls['firstName'].setValue('');
     this.regForm.controls['lastName'].setValue('');
     this.regForm.controls['UserName'].setValue('');
@@ -198,6 +202,7 @@ export class DashNavbarComponent implements OnInit {
     this.emailerror = false;
     this.passworderror = false;
     this.reppaswrderror = false;
+    this.samepasserror = false;
   }
 
   signinnavclk() {
@@ -250,9 +255,9 @@ export class DashNavbarComponent implements OnInit {
       this.reppaswrderror = false;
     }
 
-    if(this.regForm.controls['Userpassword'].value != this.regForm.controls['Repeatpassword'].value){
+    if (this.regForm.controls['Userpassword'].value != this.regForm.controls['Repeatpassword'].value) {
       this.samepasserror = true;
-    }else{
+    } else {
       this.samepasserror = false;
     }
 
@@ -281,43 +286,68 @@ export class DashNavbarComponent implements OnInit {
   }
 
   signinclk() {
-    this.loginuserName = '';this.spinner = true;this.spinnerTime = new Date().getTime();
-    if (this.loginForm.controls['loginemail'].value == '') {
-      this.loginmailerr = true;
-    }
-    else {
-      this.loginmailerr = false;
+    this.loginuserName = ''; this.spinner = true; this.spinnerTime = new Date().getTime();
+    var errormsg = '';
+
+    if (this.loginForm.controls['loginemail'].value == '' || this.loginForm.controls['loginemail'].value == null ||
+      this.loginForm.controls['loginemail'].value == undefined) {
+      if (errormsg == '') {
+        errormsg = "Email Address required,"
+      } else {
+        errormsg = errormsg + "Email Address required,"
+      }
     }
 
-    if (this.loginForm.controls['loginpassword'].value == '') {
-      this.loginpswrderr = true;
-    }
-    else {
-      this.loginpswrderr = false;
+    if (this.loginForm.controls['loginpassword'].value == '' || this.loginForm.controls['loginpassword'].value == null ||
+      this.loginForm.controls['loginpassword'].value == undefined) {
+      if (errormsg == '') {
+        errormsg = "Password is required,"
+      } else {
+        errormsg = errormsg + "Password is required,"
+      }
     }
 
-    if (this.loginForm.controls['loginemail'].value == '' || this.loginForm.controls['loginpassword'].value == '') {
+    if (errormsg != '') {
+      this.toast.warning(`Following Fields Required: ${errormsg.substring(0, errormsg.length - 1)}`);
       return;
     }
+
+    // if (this.loginForm.controls['loginemail'].value == '') {
+    //   this.loginmailerr = true;
+    // }
+    // else {
+    //   this.loginmailerr = false;
+    // }
+
+    // if (this.loginForm.controls['loginpassword'].value == '') {
+    //   this.loginpswrderr = true;
+    // }
+    // else {
+    //   this.loginpswrderr = false;
+    // }
+
+    // if (this.loginForm.controls['loginemail'].value == '' || this.loginForm.controls['loginpassword'].value == '') {
+    //   return;
+    // }
 
     const obj = Object.assign({})
     obj.username = this.loginForm.controls['loginemail'].value;
     obj.password = this.loginForm.controls['loginpassword'].value;
     this.service.login(obj).pipe(takeUntil(this.destroySubject$)).subscribe(x => {
-      this.spinner = false;this.spinnerTime = 0;
+      this.spinner = false; this.spinnerTime = 0;
       if (x) {
         if (x?.message == "Login successful") {
           this.loginuserName = x?.userName
           this.usernametrue = true;
           this.toast.success(x?.message);
           $('#signinmodal').modal('hide');
-          if(this.donORreciev == 'donatenow'){
+          if (this.donORreciev == 'donatenow') {
             this.MenuClk('donatenow');
           }
-          else if(this.donORreciev == 'Recievedonation'){
+          else if (this.donORreciev == 'Recievedonation') {
             this.MenuClk('Recievedonation');
           }
-          
+
         } else {
           this.usernametrue = false;
           this.toast.error(x?.message);
@@ -331,6 +361,7 @@ export class DashNavbarComponent implements OnInit {
     this.usernametrue = false;
     this.router.navigate(['overview/home']);
     this.MenuClk('home');
+    this.service.senddonclk('fromlogout');
 
   }
 
@@ -366,6 +397,8 @@ export class DashNavbarComponent implements OnInit {
         this.usermail = x?.email;
         $('#forgotmodal').modal('hide');
         $('#paswrdResetmodal').modal('show');
+        this.visible3 = false;
+        this.visible4 = false;
       }
       else {
         this.toast.error(x?.message)
@@ -375,53 +408,68 @@ export class DashNavbarComponent implements OnInit {
 
   }
 
-  resetpaswrd(){
+  resetpaswrd() {
     const obj = Object.assign({})
     obj.Email = this.usermail;
     obj.password = this.newpswdCntrl.value;
-    if(this.newpswdCntrl.value == '' || this.repeatpaswrdCntrl.value == ''){
+    $('#signinmodal').modal('hide');
+    if (this.newpswdCntrl.value == '' || this.repeatpaswrdCntrl.value == '') {
       this.toast.warning('please fill the inputs');
       return;
     }
 
-    else if(this.newpswdCntrl.value != this.repeatpaswrdCntrl.value ){
+    else if (this.newpswdCntrl.value != this.repeatpaswrdCntrl.value) {
       this.toast.warning('password should be same');
       return;
     }
 
-    this.service.Userupdatepaswrd(obj).subscribe(x=>{
-      if(x.message = "Password Updated Successfully"){
+    this.service.Userupdatepaswrd(obj).subscribe(x => {
+      if (x.message = "Password Updated Successfully") {
         this.toast.success("Password Updated Successfully");
         $('#paswrdResetmodal').modal('hide');
         $('#signinmodal').modal('show');
       }
-      else{
+      else {
         this.toast.error(x?.message);
       }
     })
   }
 
-  viewpswrd(){
+  viewpswrd() {
     this.visible = !this.visible;
     this.changetype = !this.changetype;
   }
 
-  viewpswrd1(){
-    this.visible1 = !this.visible1;
-    this.changetype1 = !this.changetype1;
+  viewpswrd1() {
+
+    if($('#shwoswdchk').prop('checked') == true){
+      this.changetype1 = false
+    }
+    if($('#shwoswdchk').prop('checked') == false){
+      this.changetype1 = true
+    }
+    // this.visible1 = !this.visible1;
+    // this.changetype1 = !this.changetype1;
   }
 
-  viewpswrd2(){
-    this.visible2 = !this.visible2;
-    this.changetype2 = !this.changetype2;
+  viewpswrd2() {
+    if($('#showrpswd').prop('checked') == true){
+      this.changetype2 = false
+    }
+    if($('#showrpswd').prop('checked') == false){
+      this.changetype2 = true
+    }
+
+    // this.visible2 = !this.visible2;
+    // this.changetype2 = !this.changetype2;
   }
 
-  viewpswrd3(){
+  viewpswrd3() {
     this.visible3 = !this.visible3;
     this.changetype3 = !this.changetype3;
   }
 
-  viewpswrd4(){
+  viewpswrd4() {
     this.visible4 = !this.visible4;
     this.changetype4 = !this.changetype4;
   }
